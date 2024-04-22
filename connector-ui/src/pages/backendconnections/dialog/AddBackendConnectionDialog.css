@@ -1,0 +1,12 @@
+.abc-dialog-sourcetype-label {
+    margin-top: 10px;
+    font-size: 16px;
+}
+
+.abc-dialog-note {
+    color: var(--v-accent-base);
+}
+
+.text-color{
+    color: var(--v-primary-base);
+}

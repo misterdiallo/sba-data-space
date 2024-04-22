@@ -1,0 +1,12 @@
+.sourcetypescard {
+    width: 400px;
+    height: 300px;
+}
+
+.hideChart {
+    display: none;
+}
+
+.hideNoChartData {
+    display: none!important;
+}

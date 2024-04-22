@@ -1,0 +1,149 @@
+<v-card class="info-box">
+    <v-card-title>{{title}}</v-card-title>
+    <v-card-text v-if="currentRoute  == 'idsresourcesoffering'">
+        <v-card-text>
+            Overview of all currently offered IDS
+            resources.
+            <br><br>
+            The table can be filtered and searched. New IDS resources can be added by clicking the
+            "ADD RESOURCE"-button.
+            <br><br>
+            Existing IDS resources can be changed by clicking the pencil button or deleted by clicking the trash
+            button.
+        </v-card-text>
+    </v-card-text>
+    <v-card-text v-if="currentRoute  == 'addresource'">
+        <v-card-text>
+            The information needed to add a new IDS resource is separated into three types:
+            <br>
+            <br>
+            <b>Meta data: </b>General information about the resource data.
+            <br>
+            <br>
+            <b>Policy: </b>Information about how often or how long the resource data can be used.
+            <br>
+            <br>
+            <b>Representation: </b>How is the data accessed?
+            <br>
+            <br>
+            <b>Brokers: </b>To which brokers should the resource be registered?
+        </v-card-text>
+    </v-card-text>
+    <v-card-text v-if="currentRoute  == 'editresource'">
+        <v-card-text>
+            Editing an IDS resource is separated into three types:
+            <br>
+            <br>
+            <b>Meta data: </b>General information about the resource data.
+            <br>
+            <br>
+            <b>Policy: </b>Information about how often or how long the resource data can be used.
+            <br>
+            <br>
+            <b>Representation: </b>How is the data accessed?
+            <br>
+            <br>
+            <b>Brokers: </b>To which brokers should the resource be registered?
+        </v-card-text>
+    </v-card-text>
+    <v-card-text v-if="currentRoute  == 'backendconnections'">
+        <v-card-text>
+            Overview of all currently defined backend connections.<br>
+            A backend connection defines how the data of an IDS resource can be accessed. For example a database URL
+            with credentials.
+        </v-card-text>
+    </v-card-text>
+    <v-card-text v-if="currentRoute  == 'routesoffering'">
+        <v-card-text>
+            Overview of all currently defined routes of offered data.<br>
+        </v-card-text>
+    </v-card-text>
+    <v-card-text v-if="currentRoute  == 'routesconsumption'">
+        <v-card-text>
+            Overview of all currently defined routes of requested data.<br>
+        </v-card-text>
+    </v-card-text>
+    <v-card-text v-if="currentRoute  == 'addrouteoffering'">
+        <v-card-text>
+            Creation of a route. Nodes of the types "Backend", "App" and "Artifact" can be created and connected by
+            edges.
+            <br>
+            <br>
+            For each edge, the inputs and outputs to be connected can be selected by double-clicking.
+            <br>
+            <br>
+            The resource data can be entered by double-clicking on the "Artifact" node.<br>
+        </v-card-text>
+    </v-card-text>
+    <v-card-text v-if="currentRoute  == 'addrouteconsumption'">
+        <v-card-text>
+            Creation of a route. Nodes of the types "Backend", "App" and "Artifact" can be created and connected by
+            edges.
+            <br>
+            <br>
+            For each edge, the inputs and outputs to be connected can be selected by double-clicking.
+            <br>
+            <br>
+            The "Artifact" node here is only a placeholder for the artifact of the requested resource.
+            <br><br>
+            This route must be linked to the requested artifact at the "Request Resource" page.
+        </v-card-text>
+    </v-card-text>
+    <v-card-text v-if="currentRoute  == 'showroute'">
+        <v-card-text>
+            Editing of a route. Nodes of the types "Backend", "App" and "IDS Endpoint" can be created and connected by
+            edges. For each edge, the inputs and outputs to be connected can be selected by double-clicking. The
+            resource data can be entered by double-clicking on the "IDS Endpoint" node.<br>
+        </v-card-text>
+    </v-card-text>
+    <v-card-text v-if="currentRoute  == 'settings'">
+        <v-card-text>
+            General settings of the DataSpaceConnector.
+        </v-card-text>
+    </v-card-text>
+    <v-card-text v-if="currentRoute  == 'idsresourcesconsumption'">
+        <v-card-text>
+            Overview of all requested IDS resources.<br><br>
+            New IDS resources can be requested by clicking the "REQUEST RESOURCE"-button.
+        </v-card-text>
+    </v-card-text>
+    <v-card-text v-if="currentRoute  == 'requestresourceconsumption'">
+        <v-card-text>
+            There are two ways to request an IDS resource from another Connector:
+            <br>
+            <br>
+            <b>Connector: </b>Enter a connector URL directly (use "/api/ids/data" endpoint) and get a list of all
+            resources of this connector, which
+            can be requested.
+            <br>
+            <br>
+            <b>Broker: </b>Enter a broker URL and search term. The broker then returns a list of resources from various
+            connectors, which can be requested.
+        </v-card-text>
+    </v-card-text>
+    <v-card-text v-if="currentRoute  == 'apps'">
+        <v-card-text>
+            Overview of all currently installed apps.
+            <br>
+            <br>
+            Here, the associated Docker containers of the apps can be started or stopped.
+            <br>
+            <br>
+            Apps (and their containers) can also be deleted.<br>
+            Running apps cannot be deleted and must be stopped first.
+        </v-card-text>
+    </v-card-text>
+    <v-card-text v-if="currentRoute  == 'subscriptions'">
+        <v-card-text>
+            Overview of all currently active subscriptions.
+            <br>
+            <br>
+            Subscriptions can be deleted.
+        </v-card-text>
+    </v-card-text>
+    <v-card-text v-if="currentRoute  == 'subscriberesource'">
+        <v-card-text>
+            Subscribe to resources as IDS or non-IDS system
+        </v-card-text>
+    </v-card-text>
+</v-card>

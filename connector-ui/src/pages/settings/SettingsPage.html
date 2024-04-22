@@ -1,0 +1,128 @@
+<div>
+    <v-form v-model="valid" ref="form">
+        <v-row class="settings-row" no-gutters>
+            <v-col cols="12" md="2">
+                Connector
+            </v-col>
+            <v-col cols="12" md="9">
+                <v-text-field label="Connector ID" v-model="connectorId" :rules="urlRule"> </v-text-field>
+                <v-text-field label="Title" v-model="connectorTitle"> </v-text-field>
+                <v-text-field label="Description" v-model="connectorDescription"> </v-text-field>
+                <v-text-field label="Curator" v-model="connectorCurator" :rules="urlRule"> </v-text-field>
+                <v-text-field label="Maintainer" v-model="connectorMaintainer" :rules="urlRule"> </v-text-field>
+            </v-col>
+        </v-row>
+        <v-row no-gutters class="settings-row settings-connector-status">
+            <v-col cols="12" md="2">
+                Default endpoint
+            </v-col>
+            <v-col cols="12" md="9">
+                {{ defaultEndpoint }}
+            </v-col>
+        </v-row>
+        <v-row no-gutters class="settings-row settings-connector-status">
+            <v-col cols="12" md="2">
+                Inbound model version
+            </v-col>
+            <v-col cols="12" md="9">
+                {{ connectorInboundModelVersion }}
+            </v-col>
+        </v-row>
+        <v-row no-gutters class="settings-row settings-connector-status">
+            <v-col cols="12" md="2">
+                Outbound model version
+            </v-col>
+            <v-col cols="12" md="9">
+                {{ connectorOutboundModelVersion }}
+            </v-col>
+        </v-row>
+        <v-row no-gutters class="settings-row settings-connector-status">
+            <v-col cols="12" md="2">
+                Connector version
+            </v-col>
+            <v-col cols="12" md="9">
+                <p class="version-par">{{ connectorVersion }}</p>
+                <p v-if="updateAvailable" class="update-par">Update ({{updateVersion}}) available</p>
+            </v-col>
+        </v-row>
+        <v-row class="settings-row" no-gutters>
+            <v-col cols="12" md="2">
+                Proxy
+            </v-col>
+            <v-col cols="12" md="9">
+                <v-radio-group v-model="useProxy" class="proxy-radio-group">
+                    <v-radio label="No proxy" value="false"></v-radio>
+                    <v-radio label="Manual configuration" value="true"></v-radio>
+                </v-radio-group>
+                <v-row class="proxy-settings-row" no-gutters v-if="useProxy=='true'">
+                    <v-col cols="12" md="12">
+                        <v-text-field label="Proxy URL" v-model="proxyUrl" :rules="urlRule"> </v-text-field>
+                        <v-checkbox v-model="proxyAuthenticationNeeded" label="Use authentication"></v-checkbox>
+                        <div class="proxy-authentication"
+                            v-bind:class="{ visible: proxyAuthenticationNeeded, invisible: !proxyAuthenticationNeeded }">
+                            <v-text-field label="Username" v-model="proxyUsername"> </v-text-field>
+                            <v-text-field label="Password" v-model="proxyPassword"
+                                :type="showPassword ? 'text' : 'password'"
+                                :append-icon="showPassword ? 'mdi-eye' : 'mdi-eye-off'"
+                                @click:append="showPassword = !showPassword">
+                            </v-text-field>
+                        </div>
+                        <v-textarea label="Do not use the proxy settings for these hosts and domains"
+                            v-model="proxyNoProxy">
+                        </v-textarea>
+                    </v-col>
+                </v-row>
+            </v-col>
+        </v-row>
+        <v-row class="settings-row" no-gutters>
+            <v-col cols="12" md="2">
+                LogLevel
+            </v-col>
+            <v-col cols="12" md="9">
+                {{ logLevel }}
+            </v-col>
+        </v-row>
+        <v-row class="settings-row" no-gutters>
+            <v-col cols="12" md="2">
+                Connector Deploy Mode
+            </v-col>
+            <v-col cols="12" md="9">
+                <v-select label="Deploy Mode" v-model="connectorDeployMode" :items="connectorDeployModes" item-text="displayName"
+                          item-value="displayName" required>
+                </v-select>
+            </v-col>
+        </v-row>
+        <v-row class="settings-row" no-gutters>
+            <v-col cols="12" md="2">
+                TrustStore
+            </v-col>
+            <v-col cols="12" md="9">
+                <v-text-field label="TrustStore URL" v-model="trustStoreUrl"> </v-text-field>
+                <v-text-field label="TrustStore Password" v-model="trustStorePassword"
+                    :type="showPasswordTrustStore ? 'text' : 'password'" :append-icon="showPasswordTrustStore ?
+                    'mdi-eye' :
+                    'mdi-eye-off'" @click:append="showPasswordTrustStore = !showPasswordTrustStore"> </v-text-field>
+                <v-text-field label="TrustStore Alias" v-model="trustStoreAlias"> </v-text-field>
+            </v-col>
+        </v-row>
+        <v-row class="settings-row" no-gutters>
+            <v-col cols="12" md="2">
+                KeyStore
+            </v-col>
+            <v-col cols="12" md="9">
+                <v-text-field label="KeyStore URL" v-model="keyStoreUrl"> </v-text-field>
+                <v-text-field label="KeyStore Password" v-model="keyStorePassword"
+                    :type="showPasswordKeyStore ? 'text' : 'password'" :append-icon="showPasswordKeyStore ? 'mdi-eye' :
+                    'mdi-eye-off'" @click:append="showPasswordKeyStore = !showPasswordKeyStore"> </v-text-field>
+                <v-text-field label="KeyStore Alias" v-model="keyStoreAlias"> </v-text-field>
+            </v-col>
+        </v-row>
+    </v-form>
+    <v-row class="settings-row" no-gutters>
+        <v-col cols="12" md="12" class="save-settings-col">
+            <v-btn color="primary" @click.native="saveSettings" :disabled="!valid" class="save-settings-button">Save
+            </v-btn>
+            <div class="save-message">{{ saveMessage }}</div>
+        </v-col>
+    </v-row>
+</div>

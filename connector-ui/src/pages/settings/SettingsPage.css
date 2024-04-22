@@ -1,0 +1,46 @@
+.proxy-authentication.invisible {
+    display: none;
+}
+
+.settings-row {
+    margin-bottom: 30px;
+}
+
+.settings-connector-status {
+    margin-bottom: 30px;
+}
+
+.save-settings-button {
+    margin-right: 10px;
+}
+
+.save-settings-col {
+    display: flex;
+    align-items: center;
+    margin-top: 25px;
+    margin-bottom: 30px;
+}
+
+.save-message {
+    color: var(--v-success-base)
+}
+
+.proxy-radio-group {
+    margin-top: 0px;
+}
+
+.proxy-settings-row {
+    margin-left: 30px;;
+}
+
+.version-par {
+    float: left;
+}
+
+.update-par {
+    float: left;
+    background-color: var(--v-accent-base);
+    color: white;
+    margin-left: 10px;
+    padding: 0px 10px 0px 10px;
+}

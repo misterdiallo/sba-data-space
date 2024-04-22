@@ -1,0 +1,76 @@
+<div class="content">
+  <div>
+      <div class="text-h5 header-text ">
+         Data Offerings
+      </div>
+      <div class="text-subtitle-1 font-weight-regular">
+          Overview of all currently offered IDS resources.
+      </div>
+      <v-row>
+          <v-col md="2" sm="12" class="pb-0">
+              <v-btn elevation="1" color="primary" class="buttontext--text addresourcebutton" to="/addresource">Add Offering
+              </v-btn>
+          </v-col>
+      </v-row>
+    <v-row>
+        <v-col class="pb-0" cols="12" md="3" sm="6">
+            <v-select label="Filter by catalog" v-model="catalogId" :items="catalogs" item-text="title" item-value="id"
+                      @change="catalogChanged">
+            </v-select>
+        </v-col>
+      <v-col class="pb-0"  cols="12" md="3" sm="12">
+        <v-text-field v-model="search" append-icon="mdi-magnify" label="Search" single-line hide-details></v-text-field>
+      </v-col>
+    </v-row>
+    <v-row no-gutters>
+      <v-col cols="12" md="11" sm="12">
+        <v-data-table :headers="headers" :items="resources" :items-per-page="5" :search="search" :sort-by.sync="sortBy"
+          :sort-desc.sync="sortDesc" no-data-text="No resources available">
+          <template v-slot:item.agreements="{ item }">
+            <v-chip class="resources-page-agreements-button" @click="showAgreements(item)">
+              {{ item.agreements.length }}
+            </v-chip>
+          </template>
+          <template v-slot:item.actions="{ item }">
+            <v-tooltip bottom>
+              <template v-slot:activator="{ on, attrs }">
+                <v-icon class="mr-2" @click="showItem(item)" v-bind="attrs" v-on="on">
+                  mdi-eye
+                </v-icon>
+              </template>
+              <span>Show details</span>
+            </v-tooltip>
+            <v-tooltip bottom>
+              <template v-slot:activator="{ on, attrs }">
+                <v-icon class="mr-2" @click="editItem(item)" v-bind="attrs" v-on="on">
+                  mdi-pencil
+                </v-icon>
+              </template>
+              <span>Edit resource</span>
+            </v-tooltip>
+            <v-tooltip bottom>
+              <template v-slot:activator="{ on, attrs }">
+                <v-icon class="mr-2" @click="editItemReferences(item)" v-bind="attrs" v-on="on">
+                  mdi-arrow-right-box
+                </v-icon>
+              </template>
+              <span>Add resource references</span>
+            </v-tooltip>
+            <v-tooltip bottom>
+              <template v-slot:activator="{ on, attrs }">
+                <v-icon @click="deleteItem(item)" v-bind="attrs" v-on="on">
+                  mdi-delete
+                </v-icon>
+              </template>
+              <span>Delete resource</span>
+            </v-tooltip>
+          </template>
+        </v-data-table>
+      </v-col>
+    </v-row>
+  </div>
+  <resource-details-dialog ref="resourceDetailsDialog"></resource-details-dialog>
+  <confirmation-dialog ref="confirmationDialog"></confirmation-dialog>
+  <resource-reference-dialog ref="resourceReferenceDialog"></resource-reference-dialog>
+  <resource-agreements-dialog ref="resourceAgreementsDialog"></resource-agreements-dialog>
+</div>

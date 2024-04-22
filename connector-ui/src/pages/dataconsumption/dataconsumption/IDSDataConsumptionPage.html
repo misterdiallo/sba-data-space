@@ -1,0 +1,135 @@
+<div class="content data-consumption-page">
+    <v-tabs class="pagestab" v-model="active_tab" ref="pagestab" hide-slider>
+        <v-tab>Connector</v-tab>
+        <v-tab>Broker</v-tab>
+        <v-tab-item :eager="true">
+            <div>
+                <v-row no-gutters class="data-consumption-page-row">
+                    <v-col cols="12" md="11" sm="12">
+                        <v-form v-model="valid" ref="form" @submit="receiveCatalogs">
+                            <v-text-field label="Provider Connector URL" v-model="recipientId" :rules="providerUrlRule">
+                            </v-text-field>
+                            <v-btn id="btn-show-catalogs" color="primary" @click.native="receiveCatalogs"
+                                :disabled="!valid">
+                                Show available resources
+                            </v-btn>
+                        </v-form>
+                        <div v-if="resources.length > 0">
+                            <h3 class="data-consumption-page-title">Resources:</h3>
+                            <div>
+                                <v-data-table :headers="headers" :items="resources" :items-per-page="5"
+                                    :sort-by.sync="sortBy" :sort-desc.sync="sortDesc"
+                                    no-data-text="No resources available">
+                                    <template v-slot:item.actions="{ item }">
+                                        <v-tooltip bottom @click="selectElement(item)" >
+                                            <template v-slot:activator="{ on, attrs }" v-if="momentDiff(item.contractPeriodToValue,'YYYY-MM-DD') >= 0 && momentDiff(item.contractPeriodFromValue,'YYYY-MM-DD') <= 0" >
+                                                <v-icon class="mr-2" @click="showRepresentations(item)" v-bind="attrs"
+                                                    v-on="on">
+                                                    mdi-file-find
+                                                </v-icon>
+                                            </template>
+                                            <span>Show representations</span>
+                                        </v-tooltip>
+                                        <v-tooltip bottom>
+                                            <template v-slot:activator="{ on, attrs }">
+                                                <v-icon class="mr-2" @click="showItem(item)" v-bind="attrs" v-on="on">
+                                                    mdi-eye
+                                                </v-icon>
+                                            </template>
+                                            <span>Show meta data</span>
+                                        </v-tooltip>
+                                    </template>
+                                </v-data-table>
+                            </div>
+                        </div>
+                        <div v-if="selectedRepresentations.length > 0">
+                            <h3>Select Representation:</h3>
+                            <div v-for="representation in selectedRepresentations">
+                                <v-btn color="secondary" @click="selectRepresentation(representation)">
+                                    {{ representation.display }}
+                                </v-btn>
+                                <div v-for="filetype in resources.filetype">{{ filetype }}</div>
+                            </div>
+                        </div>
+                        <div v-if="selectedArtifacts.length > 0">
+                            <h3 class="data-consumption-page-title">Artifacts:</h3>
+                            <!--                    <div v-for="artifact in selectedArtifacts">
+                        <v-btn color="secondary">
+                            {{ artifact['@id'] }}
+                        </v-btn>
+                    </div> -->
+                            <v-data-table :headers="headersArtifacts" :items="selectedArtifacts" :items-per-page="5">
+                                <template v-slot:item.actions="{ item }">
+                                    <v-tooltip bottom>
+                                        <template v-slot:activator="{ on, attrs }">
+                                            <v-icon class="mr-2" @click="requestArtifact(item)" v-bind="attrs"
+                                                v-on="on">
+                                                mdi-lock-open
+                                            </v-icon>
+                                        </template>
+                                        <span>Request artifact</span>
+                                    </v-tooltip>
+                                </template>
+                            </v-data-table>
+                        </div>
+                        <div v-if="requestContractResponse['confirmed'] == true">
+                            <h3 class="data-consumption-page-title">Download:</h3>
+                            <v-btn color="secondary" :href="downloadLink" target="_blank">
+                                {{ downloadLink }}
+                            </v-btn>
+                        </div>
+                        <div v-if="requestContractResponse['confirmed'] == true">
+                            <h3 class="data-consumption-page-title">Dispatch via routes:</h3>
+                            <v-select label="Routes" v-model="selectedRoutes" :items="routes" item-text="description"
+                                item-value="selfLink" multiple chips></v-select>
+                            <v-btn color="secondary" @click.native="dispatchViaRoutes">
+                                Dispatch
+                            </v-btn>
+                        </div>
+                    </v-col>
+                </v-row>
+            </div>
+            <div class="data-consumption-page-bottom"></div>
+            <resource-details-dialog ref="resourceDetailsDialog"></resource-details-dialog>
+            <artifact-dialog ref="artifactDialog"></artifact-dialog>
+        </v-tab-item>
+        <v-tab-item :eager="true">
+            <div>
+                <v-row no-gutters class="data-consumption-page-row">
+                    <v-col cols="12" md="11" sm="12">
+                        <v-form v-model="validSearch" ref="form">
+                            <v-autocomplete label="Broker URL" v-model="brokerUri" :items="brokerUris"
+                                no-data-text="No saved brokers" :rules="providerUrlRule">
+                            </v-autocomplete>
+                            <v-text-field label="Search" v-model="search" :rules="defaultRule">
+                            </v-text-field>
+                            <v-btn color="primary" @click.native="searchResources" :disabled="!validSearch">
+                                Search resources
+                            </v-btn>
+                        </v-form>
+                        <div v-if="searchResult.length > 0">
+                            <h3 class="data-consumption-page-title">Resources:</h3>
+                            <div>
+                                <v-data-table :headers="headersSearch" :items="searchResult" :items-per-page="5"
+                                    :sort-by.sync="sortBy" :sort-desc.sync="sortDesc"
+                                    no-data-text="No resources available">
+                                    <template @click="selectElement(item)" v-slot:item.actions="{ item }">
+                                        <v-tooltip bottom>
+                                            <template v-slot:activator="{ on, attrs }">
+                                                <v-icon class="mr-2" @click="requestSearchResult(item)" v-bind="attrs"
+                                                    v-on="on">
+                                                    mdi-arrow-down-box
+                                                </v-icon>
+                                            </template>
+                                            <span>Request resource</span>
+                                        </v-tooltip>
+                                    </template>
+                                </v-data-table>
+                            </div>
+                        </div>
+                    </v-col>
+                </v-row>
+            </div>
+        </v-tab-item>
+    </v-tabs>
+</div>

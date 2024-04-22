@@ -1,0 +1,42 @@
+<div class="content">
+    <div>
+        <div class="text-h5 header-text ">
+            Policy Templates
+        </div>
+        <div class="text-subtitle-1 font-weight-regular">
+            Overview of the usage policies for information of how often or how long the resource data can be used.
+        </div>
+        <v-row class="no-gutters">
+            <add-policy-dialog ref="addPolicyDialog" @policyTemplateSaved="policyTemplateSaved">
+            </add-policy-dialog>
+        </v-row>
+        <v-row no-gutters>
+            <v-col cols="6" md="6" sm="6">
+<!--                <v-select label="Filter by policy" v-model="policyId" :items="catalogs" item-text="title" item-value="id"
+                          @change="policyChanged">
+                </v-select>-->
+            </v-col>
+<!--            <v-col cols="12" md="6" sm="12">
+                <v-text-field v-model="search" append-icon="mdi-magnify" label="Search" single-line hide-details></v-text-field>
+            </v-col>-->
+        </v-row>
+        <v-row>
+            <v-col cols="12" md="12" sm="12">
+                <div v-if="allContracts.length > 0">
+                    <v-data-table v-model="selected" :headers="headers" :items="allContracts" :items-per-page="5"
+                                  :search="search" item-key="url">
+                        <template v-slot:item.actions="{ item }">
+                            <v-icon class="mr-2" @click="editPolicyTemplate(item)">
+                                mdi-pencil
+                            </v-icon>
+                            <v-icon @click="deletePolicyTemplate(item)">
+                                mdi-delete
+                            </v-icon>
+                        </template>
+                    </v-data-table>
+                </div>
+            </v-col>
+        </v-row>
+    </div>
+    <confirmation-dialog ref="confirmationDialog"></confirmation-dialog>
+</div>

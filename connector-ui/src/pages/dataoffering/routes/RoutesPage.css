@@ -1,0 +1,28 @@
+.div-under-construction {
+    border: 1px solid var(--v-accent-base);
+    color: var(--v-accent-base);
+    padding: 30px!important;
+    display: flex;
+    align-content: center;
+    justify-content: center;
+    margin-bottom: 20px;
+    flex-direction: column;
+}
+
+.div-under-construction-title {
+    font-weight: bold;
+    font-size: 26px;
+    display: flex;
+    justify-content: center;
+}
+
+.div-under-construction-text {
+    font-size: 16px;
+    display: flex;
+    justify-content: center;
+}
+
+.route-errors-title {
+    font-weight: bold;
+    margin-top: 15px;
+}

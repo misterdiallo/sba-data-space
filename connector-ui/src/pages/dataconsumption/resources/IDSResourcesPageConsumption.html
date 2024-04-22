@@ -1,0 +1,47 @@
+<div class="content">
+  <div>
+    <v-btn elevation="1" color="primary" class="buttontext--text addresourcebutton" to="/requestresourceconsumption">
+      Request Resource
+    </v-btn>
+    <v-row no-gutters>
+      <v-col cols="12" md="6" sm="6">
+        <v-text-field v-model="search" append-icon="mdi-magnify" label="Search" single-line hide-details></v-text-field>
+      </v-col>
+    </v-row>
+    <v-row no-gutters>
+      <v-col cols="12" md="11" sm="12">
+        <v-data-table :headers="headers" :items="filteredResources" :items-per-page="5" :search="search"
+          no-data-text="No resources available">
+          <template v-slot:item.actions="{ item }">
+            <v-tooltip bottom>
+              <template v-slot:activator="{ on, attrs }">
+                <v-icon class="mr-2" @click="showItem(item)" v-bind="attrs" v-on="on">
+                  mdi-eye
+                </v-icon>
+              </template>
+              <span>Show details</span>
+            </v-tooltip>
+            <v-tooltip bottom>
+              <template v-slot:activator="{ on, attrs }">
+                <v-icon class="mr-2" @click="subscribeItem(item)" v-bind="attrs" v-on="on">
+                  mdi-rss
+                </v-icon>
+              </template>
+              <span>Subscribe</span>
+            </v-tooltip>
+            <v-tooltip bottom>
+              <template v-slot:activator="{ on, attrs }">
+                <v-icon class="mr-2" @click="deleteItem(item)" v-bind="attrs" v-on="on">
+                  mdi-delete
+                </v-icon>
+              </template>
+              <span>Delete requested resource</span>
+            </v-tooltip>
+          </template>
+        </v-data-table>
+      </v-col>
+    </v-row>
+  </div>
+  <resource-details-dialog ref="resourceDetailsDialog"></resource-details-dialog>
+  <confirmation-dialog ref="confirmationDialog"></confirmation-dialog>
+</div>

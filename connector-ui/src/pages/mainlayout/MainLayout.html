@@ -1,0 +1,56 @@
+<v-app id="inspire">
+    <v-navigation-drawer overlay-color="white" v-model="drawer" width="324" app>
+        <navigation-menu :advancedView="advancedView"/>
+        <v-overlay :value="blockNavigationMenu">
+        </v-overlay>
+        <template v-slot:append>
+            <div class="advancedView pa-3 text-center text--white">
+                    <v-switch
+                            ref="switch"
+                            inset
+                            v-model="advancedView"
+                            label="Advanced View"
+                            color="primary"
+                            class="pa-0 ma-0"
+                            hide-details
+                    ></v-switch>
+            </div>
+        </template>
+    </v-navigation-drawer>
+
+    <v-app-bar app height="80">
+        <v-app-bar-nav-icon @click="drawer = !drawer"></v-app-bar-nav-icon>
+
+        <v-toolbar-title class="main-title text--black">
+            {{uiTitle}}
+            <div class="text-caption">{{description}}</div>
+        </v-toolbar-title>
+    </v-app-bar>
+
+    <v-main>
+        <div class="main-header">
+            <v-breadcrumbs :items="breadcrumbs">
+                <template v-slot:divider>
+                    <v-icon>mdi-chevron-right</v-icon>
+                </template>
+            </v-breadcrumbs>
+        </div>
+        <v-row>
+            <v-col cols="12" md="12">
+                <router-view class="main-content"></router-view>
+            </v-col>
+        </v-row>
+        <v-overlay :value="showBusyIndicator">
+            <v-progress-circular indeterminate :size="70" :width="7" color="primary"></v-progress-circular>
+        </v-overlay>
+    </v-main>
+    <v-snackbar v-model="errorSnackbar" :timeout="-1" color="error">
+        {{ errorText }}
+
+        <template v-slot:action="{ attrs }">
+            <v-btn color="pink" text v-bind="attrs" @click="errorSnackbar = false">
+                X
+            </v-btn>
+        </template>
+    </v-snackbar>
+</v-app>
